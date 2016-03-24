@@ -35,7 +35,7 @@ namespace CodeLogOut
             //通过全局搜索{} 然后判断里面还有没有{}  直到最里层，然后只在最里层或代码层输出log
             StringBuilder sbContent = new StringBuilder();
             string codeContent = System.IO.File.ReadAllText(this.txtFile.Text);
-
+            
         }
      
     }
