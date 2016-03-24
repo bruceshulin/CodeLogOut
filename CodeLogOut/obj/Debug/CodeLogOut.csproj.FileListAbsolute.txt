@@ -1,0 +1,9 @@
+G:\github\CodeLogOut\CodeLogOut\bin\Debug\CodeLogOut.exe.config
+G:\github\CodeLogOut\CodeLogOut\bin\Debug\CodeLogOut.exe
+G:\github\CodeLogOut\CodeLogOut\bin\Debug\CodeLogOut.pdb
+G:\github\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.csprojResolveAssemblyReference.cache
+G:\github\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.Form1.resources
+G:\github\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.Properties.Resources.resources
+G:\github\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.csproj.GenerateResource.Cache
+G:\github\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.exe
+G:\github\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.pdb
