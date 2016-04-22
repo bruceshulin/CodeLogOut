@@ -13,7 +13,7 @@ namespace CodeLogOut
         CODENAMESPACE,
         CODEFUN,
     }
-    public class JavaCodeContent
+    public class JavaCodeContent : InterfaceCodeLog
     {
         ///都用到哪些方法，最好是能弄出来一个接口
         ///1最终生成的代码，区域块的内容替换
@@ -83,6 +83,11 @@ namespace CodeLogOut
             {
                 return ChunkType.CODEFUN;
             }
+        }
+
+        public string GetCode(string code)
+        {
+            throw new NotImplementedException();
         }
     }
 
