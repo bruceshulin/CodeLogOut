@@ -16,3 +16,12 @@ E:\工作代码\个人开发\git\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.Form
 E:\工作代码\个人开发\git\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.Properties.Resources.resources
 E:\工作代码\个人开发\git\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.csproj.GenerateResource.Cache
 G:\github\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.csprojResolveAssemblyReference.cache
+E:\工作代码\个人开发\CodeLogOut\CodeLogOut\bin\Debug\CodeLogOut.exe.config
+E:\工作代码\个人开发\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.exe
+E:\工作代码\个人开发\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.pdb
+E:\工作代码\个人开发\CodeLogOut\CodeLogOut\bin\Debug\CodeLogOut.exe
+E:\工作代码\个人开发\CodeLogOut\CodeLogOut\bin\Debug\CodeLogOut.pdb
+E:\工作代码\个人开发\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.Form1.resources
+E:\工作代码\个人开发\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.Properties.Resources.resources
+E:\工作代码\个人开发\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.csproj.GenerateResource.Cache
+E:\工作代码\个人开发\CodeLogOut\CodeLogOut\obj\Debug\CodeLogOut.csprojResolveAssemblyReference.cache

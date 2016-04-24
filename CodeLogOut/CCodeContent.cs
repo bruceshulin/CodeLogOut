@@ -7,7 +7,38 @@ using System.Text.RegularExpressions;
 
 namespace CodeLogOut
 {
-    class CCodeContent : InterfaceCodeLog
+    public class functionStruct 
+    {
+        string funname = "";
+
+        public string Funname
+        {
+            get { return funname; }
+            set { funname = value; }
+        }
+        int funindex = 0;
+
+        public int Funindex
+        {
+            get { return funindex; }
+            set { funindex = value; }
+        }
+        string param = "";
+
+        public string Param
+        {
+            get { return param; }
+            set { param = value; }
+        }
+        string code = "";
+
+        public string Code
+        {
+            get { return code; }
+            set { code = value; }
+        }
+    }
+    public class CCodeContent : InterfaceCodeLog
     {
     
         public string GetCode( string code)
@@ -26,30 +57,35 @@ namespace CodeLogOut
             //过滤掉不正确的括号
             //定位
             //插入log
+            List<functionStruct> listFunc = new List<functionStruct>();
             List<string> ListSign = new List<string>();
 
             MatchCollection mc = Regex.Matches(code, @"(?<name>\w*?)[ ]{0,}\((?<param>[\s\S]*?)\)");
             foreach (var item in mc)
             {
-
+                functionStruct func = new functionStruct();
+                func.Code = item.ToString();
                 Match ma = (Match)item;
                 Console.WriteLine(ma.Value);
                 string funname = ma.Groups["name"].Value;
+                func.Funname = funname;
                 //对方法名进行判断
                 if (CheckFuncName(funname) == false)
                 {
                     continue;
                 }
                 string param = ma.Groups["param"].Value;
+                func.Param = param;
                 //对参数进行判断
                 if (isParam(param) == false)
                 {
                     continue;
                 }
                 //查看方法后两个字符是什么
-                //如果是;那么是定义,无需要理会
+                //如果是;那么是定义,无需理会
                 //如果是{那么是方法
-                if (CheckFunctionAfter(code,ma.Value) == false)
+                int index = 0;
+                if (CheckFunctionAfter(code,ma.Value,ref index) == false)
                 {
                     continue;
                 }
@@ -63,18 +99,103 @@ namespace CodeLogOut
                 {
                     continue;
                 }
+                func.Funindex = index;
                 ListSign.Add(item.ToString());
+                listFunc.Add(func);
             }
+            string new_code  = code;
+
             StringBuilder sb = new StringBuilder();
             foreach (string item in ListSign)
             {
                 sb.AppendLine(item+"---");
             }
+
+            foreach (functionStruct item in listFunc)
+            {
+                new_code = replaceCode(new_code, item);
+            }
+            
             System.IO.File.WriteAllText("functionname.txt", sb.ToString());
-            return "";
+            System.Windows.Forms.MessageBox.Show("导出完成！");
+            return new_code;
+
         }
 
-        private bool CheckFunctionAfter(string code, string str)
+        private string replaceCode(string new_code, functionStruct item)
+        {
+
+            //在这个地方想法办插入输出代码 
+            //1从 {到}的字符全部提取出来
+            //
+            //2对里面的字符串去{}操作
+            //3 对其他的数据进行 ; 号分隔成数组
+            //判断每个分号里的数据是不是赋值，直到不是赋值操作的那行就添加输出操作
+
+            int index = FindIndex(new_code, item);
+            if (index > 0)
+            {
+
+                //上面是跳 过赋值运算，接下来就要进行输出插入点
+                new_code = new_code.Insert(index, "//------bruce------"+item.Funname);
+            }
+            else
+            {
+                return new_code;
+            }
+
+            return new_code;
+        }
+
+        /// <summary>
+        /// 直接返回插入的地址 
+        /// </summary>
+        /// <param name="new_code"></param>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        private int FindIndex(string new_code, functionStruct item)
+        {
+            //循环找到所有的地方，并记录下来，
+            if (item.Funindex >0)
+            {
+                string tmpcode = "";
+                int indexend = 0;
+                indexend = new_code.IndexOf("}", item.Funindex);
+                if (indexend < 0 || item.Funindex >= indexend)
+                {
+                    return -1;
+                }
+                tmpcode = new_code.Substring(item.Funindex, indexend - item.Funindex);
+                if (tmpcode .Length <1)
+                {
+                    return -1;
+                }
+                //接下来 分隔数据
+                string[] split_code = tmpcode.Split(';');
+                int moveindex = 0;
+                foreach (string item_code in split_code)
+                {
+                    if (item_code.Contains("="))
+                    {
+                        if (item_code.Contains("if") || item_code.Contains("for")|| item_code.Contains("while") || item_code.Contains("?"))
+                        {
+                            break;
+                        }
+                        moveindex = +item_code.Length + 1;
+                        continue;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                return item.Funindex + moveindex;
+
+            }
+            return -1;
+        }
+
+        private bool CheckFunctionAfter(string code, string str,ref int index )
         {
             bool result = false;
             int indexstart =0;//每次查找到的字符串所在位置
@@ -106,21 +227,24 @@ namespace CodeLogOut
                             else if (tmp.StartsWith("/*") == true)
                             {
                                 //说明是方法定义,所以跳过
+                                index = indexstart + str.Length;
                                 return  true;
                             }
                             else if (tmp.StartsWith("//") == true)
                             {
                                 //说明是方法定义,所以跳过
+                                index = indexstart + str.Length;
                                 return true;
                             }
                             else if (tmp.StartsWith("{") == true)
                             {
                                 //说明是方法定义,所以跳过
+                                index = indexstart + str.Length;
                                 return true;
                             }
                             else
                             {
-                                System.IO.File.AppendAllText("tmp.txt", tmp);
+                                System.IO.File.AppendAllText("tmp.txt", tmp + "\r\n");
                             }
 
                         }
