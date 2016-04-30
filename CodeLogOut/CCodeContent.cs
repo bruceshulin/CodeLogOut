@@ -131,19 +131,21 @@ namespace CodeLogOut
             //2对里面的字符串去{}操作
             //3 对其他的数据进行 ; 号分隔成数组
             //判断每个分号里的数据是不是赋值，直到不是赋值操作的那行就添加输出操作
-
-            int index = FindIndex(new_code, item);
-            if (index > 0)
+            int index = 0;
+            while (true)    //如果一个方法被宏控而出现了两或多次的重复,所以需要重新查找定位
             {
+                index = FindIndex(index,new_code, item);
+                if (index > 0)
+                {
 
-                //上面是跳 过赋值运算，接下来就要进行输出插入点
-                new_code = new_code.Insert(index, "//------bruce------"+item.Funname);
+                    //上面是跳 过赋值运算，接下来就要进行输出插入点
+                    new_code = new_code.Insert(index, "\r\n//------bruce------" + item.Funname + "\r\n");
+                }
+                else
+                {
+                    return new_code;
+                }
             }
-            else
-            {
-                return new_code;
-            }
-
             return new_code;
         }
 
@@ -153,9 +155,10 @@ namespace CodeLogOut
         /// <param name="new_code"></param>
         /// <param name="item"></param>
         /// <returns></returns>
-        private int FindIndex(string new_code, functionStruct item)
+        private int FindIndex(int index, string new_code, functionStruct item)
         {
             //循环找到所有的地方，并记录下来，
+            //由于第前一次查找的不准确,需要进行二次查找
             if (item.Funindex >0)
             {
                 string tmpcode = "";
@@ -181,11 +184,13 @@ namespace CodeLogOut
                         {
                             break;
                         }
-                        moveindex = +item_code.Length + 1;
+                        moveindex = moveindex + item_code.Length + 1;
                         continue;
                     }
                     else
                     {
+                        CheckStartChar(item.Funindex ,ref moveindex, new_code);
+                        
                         break;
                     }
                 }
@@ -193,6 +198,35 @@ namespace CodeLogOut
 
             }
             return -1;
+        }
+
+        private void CheckStartChar(int index, ref int moveindex, string new_code)
+        {
+            bool isbreak = false;
+            char indexchar = '0';
+            while(true)
+            {
+                indexchar = new_code[index + moveindex];
+                switch (indexchar)
+                {
+                    case '\r':
+                    case '\n':
+                    case '\t':
+                    case '{':
+                    case ' ':
+                        moveindex++;
+                        break;
+                    case '/':
+
+                    default:
+                        isbreak = true;
+                        break;
+                }
+                if (isbreak)
+                {
+                    break;
+                }
+            }
         }
 
         private bool CheckFunctionAfter(string code, string str,ref int index )
